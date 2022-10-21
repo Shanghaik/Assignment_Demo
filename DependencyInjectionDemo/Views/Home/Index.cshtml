@@ -1,0 +1,29 @@
+﻿@using Data.ModelsClass
+@model List<Sanpham>
+
+<h1>Danh sách sản phẩm lấy ra</h1>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên</th>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th>Mô tả</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Ten</td>
+                <td>@item.Soluong</td>
+                <td>@item.Gia</td>
+                <td>@item.Trangthai</td>
+            </tr>    
+        }
+    </tbody>
+    
+</table>
