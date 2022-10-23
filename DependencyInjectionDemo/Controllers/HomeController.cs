@@ -14,14 +14,21 @@ namespace DependencyInjectionDemo.Controllers
             _logger = logger;
             _sanphamsService = sanphamsService;
         }
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             return View(await _sanphamsService.GetAllSanPham());
         }
 
-        public IActionResult Privacy()
+
+        public async Task<IActionResult> Create()
         {
             return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(Sanpham sp)
+        {
+            return View(await _sanphamsService.AddNewSanpham(sp));
         }
 
     }

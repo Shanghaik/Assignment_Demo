@@ -1,6 +1,7 @@
 ﻿using Data.ModelsClass;
 using Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.Intrinsics.Arm;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,22 +19,15 @@ namespace API.Controllers
         // GET: api/<SanphamsController>
         [HttpGet]
         [Route("get-all-sanpham")]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get() // Get all không fake
         {
-            List<Sanpham> sanphamList = new List<Sanpham>()
-            {
-                new Sanpham(){Id = Guid.NewGuid(), Ten = "ABC", Gia = 1000, Soluong = 100, Trangthai = false },
-                new Sanpham(){Id = Guid.NewGuid(), Ten = "ABC", Gia = 1000, Soluong = 100, Trangthai = true },
-                new Sanpham(){Id = Guid.NewGuid(), Ten = "ABC", Gia = 1000, Soluong = 100, Trangthai = true },
-                new Sanpham(){Id = Guid.NewGuid(), Ten = "ABC", Gia = 1000, Soluong = 100, Trangthai = true },
-                new Sanpham(){Id = Guid.NewGuid(), Ten = "ABC", Gia = 1000, Soluong = 100, Trangthai = false },
-                new Sanpham(){Id = Guid.NewGuid(), Ten = "ABC", Gia = 1000, Soluong = 100, Trangthai = false }
-            };
-            return Ok(sanphamList);
+            var sanphamList = new List<Sanpham>();
+            sanphamList = (List<Sanpham>)await _repository.GetAllAsync(); // Gọi từ DB
+            return Ok(sanphamList); 
         }
 
         // GET api/<SanphamsController>/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}")] // chưa động tới
         public string Get(int id)
         {
             return "value";
@@ -41,20 +35,32 @@ namespace API.Controllers
 
         // POST api/<SanphamsController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        [Route("create")] // Post để thêm
+        public async Task<IActionResult> Post(Sanpham sp)
         {
+            sp.Id = Guid.NewGuid();
+            var result = await _repository.AddOneAsyn(sp);
+            if (result.Id == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Something Went Wrong");
+            }else
+            return Ok("Added Successfully");
         }
 
         // PUT api/<SanphamsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        [Route("update-sanpham")]
+        public async Task<IActionResult> Put(Sanpham sp)
         {
+            await _repository.UpdateOneAsyn(sp);
+            return Ok("Updated Successfully");
         }
-
         // DELETE api/<SanphamsController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(Sanpham sp)
         {
+            var result = await _repository.DeleteOneAsyn(sp);
+            return null;
         }
     }
 }

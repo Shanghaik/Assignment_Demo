@@ -25,11 +25,11 @@ namespace Data.Configurations
                 .HasForeignKey(c => c.IDGiohang)
                 .HasConstraintName("FK_Giohang")
                 .OnDelete(DeleteBehavior.Cascade);
-            builder.HasOne<Sanpham>(e => e.Sanpham)
-                .WithMany(c => c.Giohangchitiets)
-                .HasForeignKey(c => c.IDSanpham)
-                .HasConstraintName("FK_Sanpham")
-                .OnDelete(DeleteBehavior.Cascade);
+            //builder.HasOne<Sanpham>(e => e.Sanpham)
+            //    .WithMany(c => c.Giohangchitiets)
+            //    .HasForeignKey(c => c.IDSanpham)
+            //    .HasConstraintName("FK_Sanpham")
+            //    .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

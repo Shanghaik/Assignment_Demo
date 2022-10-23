@@ -24,7 +24,9 @@ namespace Data.Repositories.Implementations
         }
         public async Task<TEntity> AddOneAsyn(TEntity entity)
         {
-            return (await this.Entities.AddAsync(entity)).Entity;
+            await this.Entities.AddAsync(entity);
+            await _dbContext.SaveChangesAsync();  
+            return entity;
         }
 
         public async Task<TEntity> AddManyAsyn(IEnumerable<TEntity> entity)
@@ -38,9 +40,11 @@ namespace Data.Repositories.Implementations
             return (TEntity)(IEnumerable<TEntity>)result;
         }
 
-        public async Task<TEntity> DeleteOneAsyn(TEntity entity)
+        public async Task<dynamic> DeleteOneAsyn(dynamic id)
         {
-            return Entities.Remove(entity).Entity;
+            var entity = Entities.FindAsync(id);
+            dynamic x = Entities.Remove(entity).Entity;
+            return x;
         }
 
         public async Task<TEntity> DeleteManyAsyn(IEnumerable<TEntity> entity)
