@@ -1,4 +1,5 @@
 ﻿using Data.DbContexts;
+using Data.ModelsClass;
 using Data.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
@@ -40,11 +41,11 @@ namespace Data.Repositories.Implementations
             return (TEntity)(IEnumerable<TEntity>)result;
         }
 
-        public async Task<dynamic> DeleteOneAsyn(dynamic id)
+        public async Task<TEntity> DeleteOneAsyn(TEntity entity)
         {
-            var entity = Entities.FindAsync(id);
-            dynamic x = Entities.Remove(entity).Entity;
-            return x;
+            await Task.FromResult<TEntity>(this.Entities.Remove(entity).Entity);
+            await _dbContext.SaveChangesAsync();
+            return entity;
         }
 
         public async Task<TEntity> DeleteManyAsyn(IEnumerable<TEntity> entity)
@@ -70,7 +71,9 @@ namespace Data.Repositories.Implementations
 
         public async Task<TEntity> UpdateOneAsyn(TEntity entity)
         {
-            return Entities.Update(entity).Entity;
+           _dbContext.Update(entity);
+            //await _dbContext.SaveChangesAsync();
+            return entity;
         }
 
         public async Task<IEnumerable<TEntity>> UpdateManyAsyn(IEnumerable<TEntity> entity)

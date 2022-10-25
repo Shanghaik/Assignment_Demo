@@ -1,6 +1,8 @@
-﻿using Data.ModelsClass;
+﻿using Data.DbContexts;
+using Data.ModelsClass;
 using Data.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Runtime.Intrinsics.Arm;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,12 +11,15 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class SanphamsController : ControllerBase
     {
         IRepositories<Sanpham> _repository;
-        public SanphamsController(IRepositories<Sanpham> repositories)
+        CuahangDbContext _dbContext;
+        public SanphamsController(IRepositories<Sanpham> repositories, CuahangDbContext dbContext)
         {
             _repository = repositories;
+            _dbContext = dbContext;
         }
         // GET: api/<SanphamsController>
         [HttpGet]
@@ -27,10 +32,10 @@ namespace API.Controllers
         }
 
         // GET api/<SanphamsController>/5
-        [HttpGet("{id}")] // chưa động tới
-        public string Get(int id)
+        [HttpGet("get-{id}")] // chưa động tới
+        public Task<Sanpham> Get(Guid id)
         {
-            return "value";
+            return _repository.GetAsync(id);
         }
 
         // POST api/<SanphamsController>
@@ -48,19 +53,29 @@ namespace API.Controllers
         }
 
         // PUT api/<SanphamsController>/5
-        [HttpPut]
-        [Route("update-sanpham")]
-        public async Task<IActionResult> Put(Sanpham sp)
+        [HttpPost]
+        [Route("update/{id}")]
+        public async Task<IActionResult> UpdateSanPham([FromBody] Sanpham sp)
         {
-            await _repository.UpdateOneAsyn(sp);
+            var result = _dbContext.Sanphams.FirstOrDefault(x => x.Id == sp.Id);
+            result.Ten = sp.Ten;
+            result.Soluong = sp.Soluong;
+            result.Gia = sp.Gia;
+            result.Trangthai = sp.Trangthai;
+            await _dbContext.SaveChangesAsync();
             return Ok("Updated Successfully");
         }
         // DELETE api/<SanphamsController>/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Sanpham sp)
+        [HttpGet]
+        [Route("delete/{id}")]
+        public async Task<IActionResult> Delete(Guid id)
         {
-            var result = await _repository.DeleteOneAsyn(sp);
-            return null;
+            Sanpham sp = _dbContext.Sanphams.FirstOrDefault(x => x.Id == id);
+            //_dbContext.Entry(sp).State = EntityState.Deleted; 
+
+            _dbContext.Remove(sp);
+            _dbContext.SaveChangesAsync();
+            return Ok("Delete Successfully");
         }
     }
 }

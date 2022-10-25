@@ -12,6 +12,10 @@ namespace Data.DbContexts
 {
     public class CuahangDbContext : DbContext
     {
+        public CuahangDbContext()
+        {
+
+        }
         public CuahangDbContext(DbContextOptions<CuahangDbContext> dbContextOptions):base(dbContextOptions)
         {
 

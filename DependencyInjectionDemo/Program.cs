@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddMvc();
-builder.Services.AddTransient<ISanphamsService, SanphamsSevice>(); // Inject => thêm dòng này vào
+builder.Services.AddScoped<ISanphamsService, SanphamsSevice>(); // Inject => thêm dòng này vào
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

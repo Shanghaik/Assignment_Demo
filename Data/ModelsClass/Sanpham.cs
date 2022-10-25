@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Data.ModelsClass
 {
+    [Serializable]
     public class Sanpham
     {
         public Guid Id { get; set; }

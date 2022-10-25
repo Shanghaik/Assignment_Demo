@@ -6,8 +6,10 @@ namespace DependencyInjectionDemo.IServices
     public interface ISanphamsService
     {
         Task<IEnumerable<Sanpham>> GetAllSanPham();
+
+        Task<Sanpham> GetSanPhamById(Guid id);
         Task<Sanpham> AddNewSanpham(Sanpham sp);
-        Task<IActionResult> RemoveSanPham(Guid id);
-        Task<IActionResult> UpdateSanpham(Sanpham sp);
+        Task<Sanpham> RemoveSanPham(Sanpham sp);
+        Task<Sanpham> UpdateSanpham(Sanpham sp);
     }
 }

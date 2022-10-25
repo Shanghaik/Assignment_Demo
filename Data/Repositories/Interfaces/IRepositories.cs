@@ -18,7 +18,7 @@ namespace Data.Repositories.Interfaces
         Task<TEntity> AddOneAsyn(TEntity entity); // thêm 1
         Task<TEntity> AddManyAsyn(IEnumerable<TEntity> entity); // thêm một loạt
         // Các phương thức xóa
-        Task<dynamic> DeleteOneAsyn(dynamic id);  // Xóa 1
+        Task<TEntity> DeleteOneAsyn(TEntity entity);  // Xóa 1
         Task<TEntity> DeleteManyAsyn(IEnumerable<TEntity> entity); // Xóa 1 loạt
         // Các phương thức sửa
         Task<TEntity> UpdateOneAsyn(TEntity entity); // Sửa 1

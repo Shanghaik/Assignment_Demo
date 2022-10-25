@@ -1,29 +1,54 @@
-﻿@using Data.ModelsClass
-@model List<Sanpham>
+﻿@model IEnumerable<Data.ModelsClass.Sanpham>
 
-<h1>Danh sách sản phẩm lấy ra</h1>
+@{
+    ViewData["Title"] = "list";
+}
 
-<table class="table table-bordered">
+<h1>list</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Tên</th>
-            <th>Giá</th>
-            <th>Số lượng</th>
-            <th>Mô tả</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ten)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Soluong)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Trangthai)
+            </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.Id</td>
-                <td>@item.Ten</td>
-                <td>@item.Soluong</td>
-                <td>@item.Gia</td>
-                <td>@item.Trangthai</td>
-            </tr>    
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ten)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Gia)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Soluong)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Trangthai)
+                </td>
+                <td>
+                    <a asp-action="Update" asp-route-id="@item.Id ">Sửa</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Chi tiết sản phẩm</a>
+                </td>
+            </tr>
         }
     </tbody>
-    
 </table>
